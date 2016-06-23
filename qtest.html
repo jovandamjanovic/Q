@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>QSphere Component Catalogue Test</title>
+    <style>
+        div {
+            border: 1px solid black;
+        }
+        #test {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="test"></div>
+</body>
+    <script src="scripts/publish/QComponentSet_Source.min.js"></script>
+    <script>
+        new QComponentSet('default', 'data/ComponentCatalogue_Jovan.xml').then(function(factory) {
+            var testContainer = document.querySelector("#test");
+            var component1 = factory.newInstance('QBeacon');
+            var comp1 = document.createElement("div");
+            comp1.innerHTML = component1.render();
+            comp1.style.width = component1.width + "px";
+            comp1.style.height = component1.height + "px";
+            var component2 = factory.newInstance('QAssistant');
+            var comp2 = document.createElement("div");
+            comp2.innerHTML = component2.render();
+            comp2.style.width = component2.width + "px";
+            comp2.style.height = component2.height + "px";
+            testContainer.appendChild(comp1);
+            testContainer.appendChild(comp2);
+        });
+    </script>
+</html>
