@@ -46,18 +46,20 @@ class QComponent {
 }
 
 class QComponentSet {
-    constructor(catalogueName, metaDataDoc) {
+    constructor(catalogueName, metaData) {
         this.catalogueName = catalogueName;
+        this.metaData = metaData;
+    }
+
+    static loadMetaData(metaDataPath) {
         return new Promise((resolve) => {
-            var that = this;
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    that.metaData = xmlToJson(xhttp.responseXML);
-                    resolve(that);
+                    resolve(xmlToJson(xhttp.responseXML));
                 }
             };
-            xhttp.open("GET", metaDataDoc, true);
+            xhttp.open("GET", metaDataPath, true);
             xhttp.send();
         });
     }

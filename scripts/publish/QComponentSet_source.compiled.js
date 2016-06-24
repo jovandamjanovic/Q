@@ -61,24 +61,11 @@ var QComponent = function () {
 }();
 
 var QComponentSet = function () {
-    function QComponentSet(catalogueName, metaDataDoc) {
-        var _this = this;
-
+    function QComponentSet(catalogueName, metaData) {
         _classCallCheck(this, QComponentSet);
 
         this.catalogueName = catalogueName;
-        return new Promise(function (resolve) {
-            var that = _this;
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    that.metaData = xmlToJson(xhttp.responseXML);
-                    resolve(that);
-                }
-            };
-            xhttp.open("GET", metaDataDoc, true);
-            xhttp.send();
-        });
+        this.metaData = metaData;
     }
 
     _createClass(QComponentSet, [{
@@ -93,6 +80,20 @@ var QComponentSet = function () {
                 var componentMetaData = filteredComponent[0];
                 return new QComponent(componentMetaData.Name["#text"], Number.parseInt(componentMetaData.Width["#text"]), Number.parseInt(componentMetaData.Height["#text"]));
             }
+        }
+    }], [{
+        key: "loadMetaData",
+        value: function loadMetaData(metaDataPath) {
+            return new Promise(function (resolve) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                        resolve(xmlToJson(xhttp.responseXML));
+                    }
+                };
+                xhttp.open("GET", metaDataPath, true);
+                xhttp.send();
+            });
         }
     }]);
 
