@@ -11,17 +11,20 @@ var xmlToJson = function xmlToJson(xml) {
         // element
         // do attributes
         if (xml.attributes.length > 0) {
-            obj["@attributes"] = {};
             for (var j = 0; j < xml.attributes.length; j++) {
                 var attribute = xml.attributes.item(j);
-                obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                obj["_" + attribute.nodeName] = attribute.nodeValue;
             }
         }
-    } else if (xml.nodeType == 3 && xml.nodeValue !== "") {
+    } else if (xml.nodeType == 3) {
         // text
-        obj = xml.nodeValue;
+        obj = xml.nodeValue.replace(/^\s+|\s+$/g, ""); //clear out whitespaces
+        if (obj === "") {
+            return; //ignore empty text elements
+        }
     }
     // do children
+    // console.log(xml.nodeType, xml.nodeName, xml.nodeValue, xml.childNodes.length);
     if (xml.hasChildNodes()) {
         for (var i = 0; i < xml.childNodes.length; i++) {
             var item = xml.childNodes.item(i);
@@ -38,6 +41,8 @@ var xmlToJson = function xmlToJson(xml) {
             }
         }
     }
+    var regexp = /{"#text":(".+?")}/g;
+    obj = JSON.parse(JSON.stringify(obj).replace(regexp, "$1"));
     return obj;
 };
 
@@ -72,13 +77,13 @@ var QComponentSet = function () {
         key: "newInstance",
         value: function newInstance(type) {
             var filteredComponent = this.metaData.ComponentCatalogue.Component.filter(function (current) {
-                if (current.Id["#text"] === type) {
+                if (current.Id === type) {
                     return current;
                 }
             });
             if (filteredComponent.length > 0) {
                 var componentMetaData = filteredComponent[0];
-                return new QComponent(componentMetaData.Name["#text"], Number.parseInt(componentMetaData.Width["#text"]), Number.parseInt(componentMetaData.Height["#text"]));
+                return new QComponent(componentMetaData.Name, Number.parseInt(componentMetaData.Width), Number.parseInt(componentMetaData.Height));
             }
         }
     }], [{
