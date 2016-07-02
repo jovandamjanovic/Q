@@ -4,34 +4,37 @@
     <meta charset="UTF-8">
     <title>QSphere Component Catalogue Test</title>
     <style>
-        div {
-            border: 1px solid black;
-        }
         #test {
-            border: none;
+            border: 1px solid black;
         }
     </style>
 </head>
 <body>
-    <div id="test"></div>
+    <svg id="test" height="300px" width="500px"></svg>
 </body>
     <script src="scripts/publish/QComponentSet_Source.min.js"></script>
     <script>
+        var testContainer = document.querySelector("#test");
+        renderComponent = (component) => {
+            var comp = component.render();
+            comp.setAttribute('width', (64 + Number.parseInt(component.metaData.Width)) + "px");
+            comp.setAttribute('height', component.metaData.Height + "px");
+            comp.classList.add(component.metaData.Id);
+            comp.onclick = () => window.alert(component.metaData.Name + " clicked!");
+            return comp;
+        };
         QComponentSet.loadMetaData('data/ComponentCatalogue_Jovan.xml').then(function(metaData) {
             var factory = new QComponentSet('default', metaData);
-            var testContainer = document.querySelector("#test");
-            var component1 = factory.newInstance('QBeacon');
-            var comp1 = document.createElement("div");
-            var component2 = factory.newInstance('QAssistant');
-            var comp2 = document.createElement("div");
-            comp1.innerHTML = component1.render();
-            comp1.style.width = component1.width + "px";
-            comp1.style.height = component1.height + "px";
-            comp2.innerHTML = component2.render();
-            comp2.style.width = component2.width + "px";
-            comp2.style.height = component2.height + "px";
-            testContainer.appendChild(comp1);
-            testContainer.appendChild(comp2);
+            var component3 = factory.newInstance('QButton');
+            var component4 = factory.newInstance('QImage');
+            var component5 = factory.newInstance('QTextArea');
+            testContainer.appendChild(renderComponent(component3));
+            testContainer.appendChild(renderComponent(component4));
+            testContainer.appendChild(renderComponent(component5));
+            document.querySelector(".QImage").setAttribute('y', '36px');
+            document.querySelector(".QImage").setAttribute('x', '36px');
+            document.querySelector(".QTextArea").setAttribute('y', '168px');
+            document.querySelector(".QTextArea").setAttribute('x', '128px');
         });
     </script>
 </html>

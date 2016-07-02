@@ -1,5 +1,52 @@
 <ComponentCatalogue>
 	<Component>
+		<Id>QImage</Id>
+		<Name>Image</Name>
+		<Type>QComponent</Type>
+		<Code>qsphere.gui.image</Code>
+		<Width>128</Width>
+		<Height>128</Height>
+		<IconThumb>iBeacon32.jpg</IconThumb>
+		<Icon>iBeacon48.jpg</Icon>
+		<Style></Style>
+		<Graphics>
+			<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="image/owl64.png"/>
+		</Graphics>
+	</Component>
+	<Component>
+		<Id>QButton</Id>
+		<Name>Button</Name>
+		<Type>QComponent</Type>
+		<Code>qsphere.gui.QButton</Code>
+		<Width>128</Width>
+		<Height>32</Height>
+		<IconThumb></IconThumb>
+		<Icon></Icon>
+		<Style></Style>
+		<Graphics>
+			<foreignObject>
+                <input type="submit"/>
+		    </foreignObject>
+		</Graphics>
+	</Component>
+	<Component>
+		<Id>QTextArea</Id>
+		<Name>TextArea</Name>
+		<Type>QComponent</Type>
+		<Code>qsphere.gui.QButton</Code>
+		<Width>128</Width>
+		<Height>64</Height>
+		<IconThumb></IconThumb>
+		<Icon></Icon>
+		<Style></Style>
+		<Graphics>
+			<foreignObject>
+                <textarea style="width: 100%;">
+                </textarea>
+		    </foreignObject>
+		</Graphics>
+	</Component>
+	<Component>
 		<Id>QBeacon</Id>
 		<Name>iBeacon</Name>
 		<Type>QComponent</Type>

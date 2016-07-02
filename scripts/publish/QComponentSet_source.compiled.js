@@ -24,8 +24,10 @@ var xmlToJson = function xmlToJson(xml) {
         }
     }
     // do children
-    // console.log(xml.nodeType, xml.nodeName, xml.nodeValue, xml.childNodes.length);
     if (xml.hasChildNodes()) {
+        if (xml.nodeName === "Graphics") {
+            return xml.innerHTML;
+        }
         for (var i = 0; i < xml.childNodes.length; i++) {
             var item = xml.childNodes.item(i);
             var nodeName = item.nodeName;
@@ -47,18 +49,24 @@ var xmlToJson = function xmlToJson(xml) {
 };
 
 var QComponent = function () {
-    function QComponent(name, width, height) {
+    function QComponent(metaData) {
         _classCallCheck(this, QComponent);
 
-        this.name = name;
-        this.width = width;
-        this.height = height;
+        this.metaData = metaData;
+        this.name = metaData.Name;
+        this.width = Number.parseInt(metaData.Width);
+        this.height = Number.parseInt(metaData.Height);
     }
 
     _createClass(QComponent, [{
         key: "render",
         value: function render() {
-            return this.name;
+            if (this.metaData.Graphics !== undefined) {
+                var template = document.createElementNS("http://www.w3.org/2000/svg", 'template');
+                template.innerHTML = this.metaData.Graphics.replace(/^\s+|\s+$/g, "").replace(/>\s*/g, '>').replace(/<\s*/g, '<');
+                return template.firstChild;
+            }
+            return document.createElement('div');
         }
     }]);
 
@@ -83,7 +91,7 @@ var QComponentSet = function () {
             });
             if (filteredComponent.length > 0) {
                 var componentMetaData = filteredComponent[0];
-                return new QComponent(componentMetaData.Name, Number.parseInt(componentMetaData.Width), Number.parseInt(componentMetaData.Height));
+                return new QComponent(componentMetaData);
             }
         }
     }], [{
